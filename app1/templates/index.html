@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#" style="color: white;">Speech Recognition for Disabled</a>
+              </div>
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Text to Speech</a></li>
+                <li><a href="#">Speech to Text</a></li>
+                <li><a href="#">Document to Speech</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Hello {{ user }}</a></li>
+                <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+              </ul>
+            </div>
+          </nav>
+        <br><br><br>
+        <div class="container">
+            <form method="GET">
+                
+                <label>Enter Text For Speech : </label>
+                <textarea name="text_translate" class = "form-control"></textarea>
+                <br>
+                <p style="margin-left: -250px;" for="language">Language </p>
+                <label>From : </label>
+                <b><select name="from_lang" id="language" class="form-control form-control-lg">
+                    <div></div>
+                    {% for key,value in lang_trans.items %}
+                    <option value="{{ key }}">{{ value }}</option>
+                    {% endfor %}
+                    
+                    
+                </select></b><br>
+                <label>To : </label>
+                <b><select name="to_lang" id="language" class="form-control form-control-lg">
+                    <div></div>
+                    {% for key,value in lang_trans.items %}
+                    <option value="{{ key }}">{{ value }}</option>
+                    {% endfor %}
+                    
+                </select></b>
+                <br>
+                <br>
+                <br>    
+                <button type="submit" class="btn btn-success">Convert Data</button>
+            </form>
+            {% if result %}
+            <h3>Result: <input type="text" id="myInput" value="{{result }}"><span style="padding: 10px;"></span><button onclick="myFunction()" class="btn btn-primary" style="height: 35px;">Copy</button></h3>
+            {% endif %}
+          </div>
+          <br><br>
+
+          <div class="container">
+            <form method="POST">
+                {% csrf_token %}
+                <label>Enter Text For Speech : </label>
+                <textarea name="Text_DAta" class = "form-control"></textarea>
+                <br>
+                <p style="margin-left: -250px;" for="language">Language </p>
+                <b><select name="language" id="language" class="form-control form-control-lg">
+                    <div></div>
+                    {% for key,value in lang_trans.items %}
+                    <option value="{{ key }}">{{ value }}</option>
+                    {% endfor %}
+                </select></b>
+                <br>
+                <br>
+                <br>    
+                <button type="submit" class="btn btn-primary">Convert Data</button>
+            </form>
+          </div><br>
+          <div class="container">
+              {% if request.POST %}
+            {% if data %}
+            <table>
+                <thead>
+                    <tr>
+                        <th style="padding-bottom: 10px;">Converted Audio</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                        <tr>
+                            <td>
+                                <audio controls>
+                                    <source src="{{ data.audio_data.url }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </audio>
+                            </td> 
+                           
+                        </tr>
+                    
+                </tbody>
+            </table>
+        {% endif %}
+        {% endif %}
+          </div>
+          <script>
+              function myFunction() {
+  /* Get the text field */
+  var copyText = document.getElementById("myInput");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+  
+}
+          </script>
+    </body>
+</html>
